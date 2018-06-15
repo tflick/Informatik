@@ -13,18 +13,14 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "complex.h"
+#include "MyComplex.h"
 #include <string>
+#include "functions.h"
+
+// root
+#include "TASImage.h"
 
 using namespace std;
-
-complex add (complex *a, complex *b) {
-    complex c;
-    c.setreal(a->getreal() + b->getreal());
-    c.setima(a->getima()+b->getima());
-    //c.print();            
-    return c;
-}
 
 int main(int argc, char** argv) {
 
@@ -32,49 +28,86 @@ int main(int argc, char** argv) {
     string input;
     complex compl1, compl2, compl3;
     
-    //read real and imaginary part for the first number
-    cout << "Give real-part for first complex number: ";
-    cin >> input;
-    cout << endl;
-    compl1.setreal(stod(input));
-    cout << "Give imaginary-part for first complex number: ";
-    cin >> input;
-    cout << endl;
-    compl1.setima(stod(input));
+    const int width=800;
+    double schritte, max_schritte;
+    double i,j;
+    double max_abs;
+    double* v= new double[width*width];
     
-    //read real and imaginary part for the second number    
-    cout << "Give real-part for second complex number: ";
-    cin >> input;
-    cout << endl;
-    compl2.setreal(stod(input));
-    cout << "Give imaginary-part for second complex number: ";
-    cin >> input;
-    cout << endl;
-    compl2.setima(stod(input));
+    TASImage* img = new TASImage(width,width);    
     
+//    //read real and imaginary part for the first number
+//    cout << "Give real-part for first complex number: ";
+//    cin >> input;
+//    cout << endl;
+//    compl1.setreal(stod(input));
+//    cout << "Give imaginary-part for first complex number: ";
+//    cin >> input;
+//    cout << endl;
+//    compl1.setima(stod(input));
+//    
+//    //read real and imaginary part for the second number    
+//    cout << "Give real-part for second complex number: ";
+//    cin >> input;
+//    cout << endl;
+//    compl2.setreal(stod(input));
+//    cout << "Give imaginary-part for second complex number: ";
+//    cin >> input;
+//    cout << endl;
+//    compl2.setima(stod(input));
+//    
+//    
+//    //print the two numbers
+//    cout << "First complex number: ";
+//    compl1.print();
+//    cout << "Second complex number: ";
+//    compl2.print();
+//    
+//    cout << endl;
+//    
+//    //Calculate absolute and square and print it to console
+//    cout << "Absolute of first number: " << compl1.abs() << endl;
+//    cout << "Square of first number: " ;
+//    compl3 = compl1.square();
+//    compl3.print();
+//    
+//    cout << endl;
+//    
+//    //Calculate the sum of the two numbers
+//    compl3 = compl1.add(compl2);
+//    
+//    //print the sum
+//    cout << "Sum of complex numbers: ";
+//    compl3.print();
+//    
+//    cout << endl;
     
-    //print the two numbers
-    cout << "First complex number: ";
-    compl1.print();
-    cout << "Second complex number: ";
-    compl2.print();
+    cout << "Mandelbrotmenge generieren" << endl;
     
-    cout << endl;
+    max_abs = 4; 
+    max_schritte = 127.;
+    int idx=0;
+    int idy=0;
     
-    //Calculate absolute and square and print it to console
-    cout << "Absolute of first number: " << compl1.abs() << endl;
-    cout << "Square of first number: " << compl1.square() << endl;
+    for (i=-2.0; i<1.995; i=i+0.005){
+        idy = 0;
+        for (j=-2.0; j<1.995; j=j+0.005){
+            compl1.setreal(i);
+            compl1.setima(j);
+            schritte = mandelbrot(compl1, max_abs, max_schritte);
+            long index = idy*width+idx;
+            
+//            cout << "i: " << i << ", j: " << j << endl;
+//            cout << "idx: " << idx << ", idy: "<< idy <<endl;
+//            cout << "index: " << index << endl;
+            v[index] = schritte;
+            idy++;
+        }
+        idx++;
+    }
     
-    cout << endl;
-    
-    //Calculate the sum of the two numbers
-    compl3 = add(&compl1, &compl2);
-    
-    //print the sum
-    cout << "Sum of complex numbers: ";
-    compl3.print();
-    
-    cout << endl;
+    img->SetImage(v,width,width);
+    img->WriteImage("mandelbrot.png");
     
     return 0;
 }

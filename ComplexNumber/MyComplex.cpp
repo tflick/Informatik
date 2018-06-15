@@ -11,7 +11,7 @@
  * Created on 8. Juni 2018, 12:43
  */
 
-#include "complex.h"
+#include "MyComplex.h"
 #include <iostream>
 #include <math.h>
 
@@ -35,6 +35,7 @@ double complex::getreal(){
 double complex::getima(){
     return ima;
 }
+
 //Setter-Methods
 int complex::setreal(double a){
     real = a;
@@ -44,17 +45,27 @@ int complex::setima(double a){
     ima = a;
     return 0;
 }
+
 //Print Methods
 void complex::print(){
     if (ima >=0) {std::cout << real << " + i " << ima << std::endl;}
     else {std::cout << real << " - i " << (-1)*ima << std::endl;}
 }
-double complex::abs(){
+
+//Calculation Methods
+double complex::betr(){
     return sqrt(pow(real,2)+pow(ima,2));
 }
-double complex::square(){
-    return (pow(real,2)-pow(ima,2));
-}   
+
+complex complex::square(){
+    complex number((pow(real,2)-pow(ima,2)), 2*real*ima);
+    return number;
+}  
+
+complex complex::add(complex& a){
+    complex number(real+a.getreal(), ima+a.getima());
+    return number;
+}
 
 complex::~complex() {
 }

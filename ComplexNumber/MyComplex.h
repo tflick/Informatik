@@ -35,8 +35,11 @@ public:
     
     //Print Methods
     void print();
-    double abs();
-    double square();    
+    
+    //Calculation Methods
+    double betr();
+    complex square();    
+    complex add(complex& a);
     
 private:
 
