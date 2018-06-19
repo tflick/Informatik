@@ -84,8 +84,8 @@ int main(int argc, char** argv) {
     
     cout << "Mandelbrotmenge generieren" << endl;
     
-    max_abs = 4; 
-    max_schritte = 127.;
+    max_abs = 3; 
+    max_schritte = 256.;
     int idx=0;
     int idy=0;
     
